@@ -1,0 +1,53 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v4
+
+      - name: Zainstaluj Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Zainstaluj zależności
+        run: pip install flask pyinstaller
+
+      - name: Zbuduj .exe
+        run: |
+          pyinstaller `
+            --onefile `
+            --name "Fakturkomat" `
+            --icon=logo.ico `
+            --hidden-import=flask `
+            --hidden-import=jinja2 `
+            --hidden-import=werkzeug `
+            --hidden-import=werkzeug.serving `
+            --hidden-import=werkzeug.routing `
+            --hidden-import=click `
+            --hidden-import=tkinter `
+            --hidden-import=tkinter.filedialog `
+            --hidden-import=tkinter.messagebox `
+            app.py
+          copy dist\Fakturkomat.exe Fakturkomat.exe
+
+      - name: Zainstaluj Inno Setup
+        run: choco install innosetup --yes
+
+      - name: Zbuduj instalator
+        run: iscc installer.iss
+
+      - name: Wgraj instalator jako artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: FakturkomatSetup
+          path: FakturkomatSetup.exe
+          retention-days: 30
