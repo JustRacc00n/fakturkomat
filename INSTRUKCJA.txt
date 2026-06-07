@@ -1,0 +1,128 @@
+============================================================
+  APLIKACJA DO WERYFIKACJI FAKTUR ŻABKA
+============================================================
+
+
+JAK ZBUDOWAĆ .EXE (tylko raz, na laptopie z Windowsem):
+--------------------------------------------------------
+1. Zainstaluj Python ze strony https://www.python.org/downloads/
+   WAŻNE: zaznacz "Add Python to PATH" podczas instalacji!
+
+2. Kliknij dwukrotnie plik: build.bat
+   (może chwilę potrwać, pokaże się czarne okno)
+
+3. Po zakończeniu pojawi się plik: faktury_app.exe
+
+4. Skopiuj faktury_app.exe do folderu z fakturami.
+   Możesz usunąć pozostałe pliki (app.py, build.bat, itp.)
+
+
+JAK UŻYWAĆ APLIKACJI:
+---------------------
+1. Kliknij dwukrotnie faktury_app.exe (może być gdziekolwiek)
+   - Pojawi się okienko wyboru folderu
+   - Wskaż folder z fakturami (PDF + XML) i kliknij OK
+   - Aplikacja zapamięta ten folder — następnym razem
+     otworzy się od razu w tym samym miejscu
+   - Otworzy się czarne okno konsoli (nie zamykaj go!)
+   - Za chwilę automatycznie otworzy się przeglądarka
+
+3. Po lewej stronie widać listę faktur do weryfikacji.
+   Kliknij fakturę, żeby zobaczyć szczegóły po prawej.
+
+4. Weryfikacja faktury:
+   - Zaznacz numery WZ (kliknij checkbox lub klawisz M)
+   - Kliknij "Zweryfikuj" lub naciśnij klawisz V
+   - Pliki faktury (PDF + XML) zostaną przeniesione do
+     podfolderów: zweryfikowane/63/, zweryfikowane/66/, itp.
+
+5. Cofnięcie weryfikacji:
+   - Naciśnij klawisz U – cofa ostatnią weryfikację
+   - Można cofać wielokrotnie (osobny stos cofnięć)
+   - Pliki wracają do folderu głównego
+
+6. Postęp jest zapisywany automatycznie (plik postep.json).
+   Po ponownym uruchomieniu aplikacji widać co już sprawdzono.
+
+7. Żeby zamknąć aplikację: zamknij czarne okno konsoli.
+
+
+WYSZUKIWANIE:
+-------------
+Pole wyszukiwania obsługuje:
+  - Numer faktury (lub jego część)
+  - Numer WZ
+  - Kwota – wpisz np. "1366,09" lub "1366" żeby znaleźć
+    fakturę zawierającą pozycję o tej kwocie
+    (przecinek lub kropka jako separator dziesiętny)
+
+Faktury typu "Inne" są domyślnie ukryte.
+Pojawią się po wpisaniu ich numeru w wyszukiwarce
+lub po kliknięciu zakładki "Inne".
+
+
+SKRÓTY KLAWISZOWE:
+------------------
+  J / ↑    – poprzednia faktura na liście
+  K / ↓    – następna faktura na liście
+  M        – przesuń fokus na następny WZ (w dół)
+  N        – przesuń fokus na poprzedni WZ (w górę)
+  Spacja   – zaznacz / odznacz aktualnie wybrany WZ
+  V        – zweryfikuj bieżącą fakturę
+  U        – cofnij ostatnią weryfikację
+  P        – pokaż / ukryj podgląd PDF
+
+
+PODGLĄD PDF:
+------------
+  - Przycisk "Pokaż PDF" lub klawisz P otwiera oryginalny
+    plik faktury obok szczegółów
+  - Jeśli brakuje pliku XML (lub jest uszkodzony), a istnieje
+    PDF, faktura i tak pojawi się na liście z ostrzeżeniem
+    i automatycznie otwartym podglądem PDF
+
+Kliknięcie numeru faktury lub numeru WZ kopiuje go do schowka.
+
+
+AUTOMATYCZNE WYPAKOWANIE ZIPÓW:
+--------------------------------
+Aplikacja automatycznie wypakowuje pliki .zip umieszczone
+w folderze z fakturami (np. pobrane paczki "documents.zip").
+Po wypakowaniu oryginalne archiwa trafiają do podfolderu
+_paczki/ i nie są już przetwarzane ponownie.
+Obsługuje zagnieżdżone podfoldery wewnątrz archiwum.
+
+
+TYPY FAKTUR:
+------------
+  63   – Dostawy (artykuły spożywcze, mrożonki, itp.)
+         Wyświetla: numer, daty, numery WZ, kwota należności,
+                    "Do zapłaty" (jeśli jest)
+
+  66   – Wyroby tytoniowe
+         Wyświetla: numer, daty, numery WZ, kwota należności
+
+  17   – Doładowania EVOUCHER
+         Wyświetla: numer, daty, lista EVOUCHER-ów z ilościami
+                    i kwotami (pozycje z tą samą nazwą są zsumowane)
+         UWAGA: Faktury 17 bez żadnego EVOUCHER-a są pomijane
+                i nie pojawiają się na liście.
+
+  Inne – Wszystkie pozostałe prefiksy (91, 54, 78, itp.)
+         Trafiają do zweryfikowane/Inne/
+         Domyślnie ukryte – widoczne po wyszukaniu lub
+         wybraniu zakładki "Inne"
+
+
+PROBLEMY?
+---------
+- Aplikacja nie otwiera się: sprawdź czy port 5555 nie jest
+  zajęty, lub uruchom ponownie.
+- Brakuje faktur na liście: kliknij przycisk "↺ Odśwież"
+  (odświeżenie strony w przeglądarce nie wystarczy!)
+- Faktura oznaczona jako "Brak XML": kliknij Odśwież po
+  umieszczeniu pliku XML z powrotem w folderze.
+- Uszkodzony plik XML: aplikacja go pominie bez błędu,
+  faktura pojawi się z samym podglądem PDF.
+
+============================================================
